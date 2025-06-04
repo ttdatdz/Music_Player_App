@@ -13,6 +13,7 @@ const durationEl = document.getElementById("duration");
 let playlist = [];
 let currentIndex = 0;
 let sleepTimerId = null;
+let sleepTimerMinutes = 0; // Thêm biến này để lưu số phút sleep timer
 
 // === TẢI PLAYLIST TỪ localStorage hoặc tạo mặc định ===
 function loadPlaylistFromStorage() {
@@ -59,6 +60,12 @@ function playSong() {
   }
   audio.play();
   playPauseBtn.textContent = "⏸"; // Đổi icon sang pause
+
+  // Không dùng setTimeout nữa, sleep timer sẽ kiểm tra trong timeupdate
+  if (sleepTimerId) {
+    clearTimeout(sleepTimerId);
+    sleepTimerId = null;
+  }
 }
 
 // === DỪNG NHẠC ===
@@ -72,8 +79,8 @@ function selectSong(index) {
   currentIndex = index;
   const song = playlist[currentIndex];
   audio.src = song.url; // Gán src khi chọn bài mới
-  currentSong.textContent = "Playing: " + song.name;
-  playSong();
+  currentSong.textContent = "Selected: " + song.name; // Đổi từ "Playing" thành "Selected"
+  playPauseBtn.textContent = "▶"; // Đảm bảo nút là play
 }
 
 // === ĐỊNH DẠNG THỜI GIAN (giây -> mm:ss) ===
@@ -118,6 +125,17 @@ volumeBar.addEventListener("input", () => {
 audio.addEventListener("timeupdate", () => {
   progressBar.value = (audio.currentTime / audio.duration) * 100;
   currentTimeEl.textContent = formatTime(audio.currentTime);
+
+  // Kiểm tra sleep timer: chỉ dừng khi currentTime >= số giây sleep timer
+  if (
+    sleepTimerMinutes > 0 &&
+    Math.floor(audio.currentTime) > sleepTimerMinutes * 60
+  ) {
+    pauseSong();
+    alert("⏰ Nhạc đã dừng sau " + sleepTimerMinutes + " phút.");
+    sleepTimerMinutes = 0; // Reset để không lặp lại
+    sleepTimerSelect.value = "0"; // Reset giao diện nếu muốn
+  }
 });
 
 // Khi tải metadata, cập nhật tổng thời lượng
@@ -139,13 +157,10 @@ progressBar.addEventListener("input", () => {
 
 // === HẸN GIỜ TẮT NHẠC ===
 sleepTimerSelect.addEventListener("change", (e) => {
-  if (sleepTimerId) clearTimeout(sleepTimerId);
-  const minutes = parseFloat(e.target.value); // Lấy số phút (có thể là thập phân)
-  if (minutes > 0) {
-    sleepTimerId = setTimeout(() => {
-      pauseSong();
-      alert("⏰ Nhạc đã dừng sau " + minutes + " phút.");
-    }, minutes * 60 * 1000);
+  sleepTimerMinutes = parseFloat(e.target.value); // Lưu số phút, không setTimeout ở đây
+  if (sleepTimerId) {
+    clearTimeout(sleepTimerId);
+    sleepTimerId = null;
   }
 });
 
