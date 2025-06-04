@@ -1,0 +1,58 @@
+body {
+  background-color: #f0f0f5;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+/* Giao diện khối trình phát nhạc chính */
+#player {
+  background-color: #fff;           /* Nền trắng */
+  padding: 20px;                    /* Khoảng cách bên trong */
+  border-radius: 16px;              /* Bo góc */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ */
+  border: 1px solid #ddd;           /* Viền nhạt */
+}
+
+/* Giao diện các card Container (playlist, thêm bài hát,...) */
+.Container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ddd;
+}
+
+/* Nút điều khiển nhạc */
+.controls button {
+  margin: 0 5px;    /* Khoảng cách giữa các nút */
+  font-size: 20px;  /* Kích thước icon */
+}
+
+/* Giao diện từng bài hát trong playlist */
+#playlist li {
+  cursor: pointer;  /* Đổi con trỏ khi hover */
+}
+
+/* Hiệu ứng hover cho bài hát trong playlist */
+#playlist li:hover {
+  background-color: #e0e0e5;
+}
+
+/* Chế độ tối cho toàn trang */
+.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+/* Chế độ tối cho khối player */
+.dark-mode #player {
+  background-color: #1e1e1e;
+}
+
+/* Chế độ tối cho các card Container và select */
+body.dark-mode .Container,
+body.dark-mode .form-select {
+  background-color: #23272b !important;
+  color: #f1f1f1 !important;
+  border-color: #fff !important;
+}

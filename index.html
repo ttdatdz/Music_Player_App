@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Music Player</title>
+    <!-- File CSS tự viết -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Thư viện Bootstrap cho giao diện đẹp -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5 text-center">
+      <h2>🎵 Music Player 🎵</h2>
+
+      <!-- Khối chính của trình phát nhạc -->
+      <div id="player">
+        <!-- Hiển thị tên bài hát đang phát -->
+        <div id="current-song">Select a song</div>
+        <!-- Thẻ audio để phát nhạc -->
+        <audio id="audio" src=""></audio>
+
+        <!-- Các nút điều khiển nhạc -->
+        <div class="controls mt-3">
+          <button id="prev" class="btn btn-primary">⏮</button>
+          <button id="backward" class="btn btn-warning">⏪ 10s</button>
+          <button id="play-pause" class="btn btn-success">▶</button>
+          <button id="forward" class="btn btn-warning">10s ⏩</button>
+          <button id="next" class="btn btn-primary">⏭</button>
+        </div>
+
+        <!-- Thanh tiến trình và hiển thị thời gian -->
+        <div
+          class="mt-3 d-flex align-items-center justify-content-center gap-2"
+        >
+          <!-- Thời gian hiện tại -->
+          <span id="current-time" style="min-width: 48px">0:00</span>
+          <!-- Thanh tiến trình bài hát -->
+          <input
+            type="range"
+            id="progress"
+            value="0"
+            max="100"
+            class="form-range flex-grow-1"
+            style="width: 100%"
+          />
+          <!-- Tổng thời lượng bài hát -->
+          <span id="duration" style="min-width: 48px">0:00</span>
+        </div>
+
+        <!-- Thanh điều chỉnh âm lượng -->
+        <div class="mt-3">
+          <label>Volume:</label>
+          <input
+            type="range"
+            id="volume"
+            value="100"
+            max="100"
+            class="form-range"
+          />
+        </div>
+
+        <!-- Hẹn giờ tắt nhạc -->
+        <div class="mt-3">
+          <label>Sleep Timer (min):</label>
+          <select id="sleep-timer" class="form-select w-auto mx-auto mt-3">
+            <option value="0">Off</option>
+            <option value="0.1">0.1 (6s)</option>
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <!-- Nút chuyển đổi giao diện sáng/tối -->
+        <div class="mt-3">
+          <button id="toggle-theme" class="btn btn-secondary">
+            🌙 Toggle Theme
+          </button>
+        </div>
+      </div>
+
+      <!-- Danh sách phát nhạc (Playlist) -->
+      <div class="Container mt-4">
+        <h3 class="mt-2">Playlist</h3>
+        <ul id="playlist" class="list-group mt-3">
+          <li class="list-group-item" onclick="selectSong(0)">Song 1</li>
+          <li class="list-group-item" onclick="selectSong(1)">Song 2</li>
+          <li class="list-group-item" onclick="selectSong(2)">Song 3</li>
+        </ul>
+      </div>
+
+      <!-- Thêm bài hát mới bằng URL -->
+      <div class="mt-4 Container">
+        <h4>Add New Song (URL)</h4>
+        <input
+          type="text"
+          id="new-song-url"
+          class="form-control mt-3"
+          placeholder="Enter song URL (.mp3)"
+        />
+        <input
+          type="text"
+          id="new-song-name"
+          class="form-control mt-3"
+          placeholder="Enter song name"
+        />
+        <button id="add-song" class="btn btn-outline-success mt-3">
+          Add to Playlist
+        </button>
+      </div>
+
+      <!-- Thêm bài hát từ máy tính -->
+      <div class="my-4 Container">
+        <h4>Add MP3 from Computer</h4>
+        <div class="alert alert-warning mt-3 text-start" role="alert">
+          <strong>Ghi chú:</strong> Các bài hát thêm từ máy tính chỉ hoạt động
+          tạm thời. Sau khi bạn <strong>tải lại trang (refresh)</strong>, chúng
+          sẽ không còn phát được nữa vì giới hạn bảo mật,bộ nhớ của trình duyệt.
+        </div>
+        <input
+          type="file"
+          id="local-file"
+          accept=".mp3"
+          class="form-control mt-3"
+        />
+        <input
+          type="text"
+          id="local-file-name"
+          class="form-control mt-3"
+          placeholder="Enter song name"
+        />
+        <button id="add-local-file" class="btn btn-outline-success mt-3">
+          Add Local MP3
+        </button>
+      </div>
+    </div>
+
+    <!-- File JavaScript điều khiển logic trình phát nhạc -->
+    <script src="script.js"></script>
+  </body>
+</html>
